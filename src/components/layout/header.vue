@@ -1,6 +1,6 @@
 <template>
   <el-header>
-    <div class="collapse-btn">
+    <div class="collapse-btn" @click="setCollapse(!collapse)">
       <i class="el-icon-s-operation"></i>
     </div>
     <div class="dropdown">
@@ -19,8 +19,19 @@
 </template>
 
 <script>
+    import {mapState,mapMutations} from 'vuex'
     export default {
-        name: "header"
+        name: "header",
+        methods:{
+          ...mapMutations([
+            'setCollapse'
+          ])
+        },
+        computed:{
+          ...mapState([
+            'collapse'
+          ])
+        }
     }
 </script>
 
@@ -34,6 +45,9 @@
     background-color: #409EFF;
     color: #303133;
     line-height: 60px;
+  }
+  .collapse-btn{
+    font-size: 25px;
   }
 </style>
 

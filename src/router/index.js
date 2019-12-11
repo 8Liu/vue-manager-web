@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import home from '@/components/layout/home'
+import sliderPath from './sliderPath'
 Vue.use(Router)
 
 export default new Router({
@@ -8,7 +9,8 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: home
+      component: home,
+      children: sliderPath
     }
   ]
 })

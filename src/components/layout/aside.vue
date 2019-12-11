@@ -1,69 +1,88 @@
 <template>
-      <el-menu
-        default-active="2"
-        :class="collapse?'collapse':'aside'"
-        :collapse-transition="false" :collapse="collapse">
+    <el-menu
+            default-active="2"
+            :class="collapse?'collapse':'aside'"
+            :collapse-transition="false"
+            :collapse="collapse" router>
         <div class="menu-header">
-          <el-avatar :size="40" src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"></el-avatar>
+            <el-avatar :size="40" src="http://img1.imgtn.bdimg.com/it/u=4238142487,3274484296&fm=26&gp=0.jpg"></el-avatar>
         </div>
-        <el-submenu index="1">
-          <template slot="title">
-            <i class="el-icon-location"></i>
-            <span>导航一</span>
-          </template>
-          <el-menu-item-group>
-            <template slot="title">分组一</template>
-            <el-menu-item index="1-1">选项1</el-menu-item>
-            <el-menu-item index="1-2">选项2</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="分组2">
-            <el-menu-item index="1-3">选项3</el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="1-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="1-4-1">选项1</el-menu-item>
-          </el-submenu>
-        </el-submenu>
-        <el-menu-item index="2">
-          <i class="el-icon-menu"></i>
-          <span slot="title">导航二</span>
-        </el-menu-item>
-        <el-menu-item index="3">
-          <i class="el-icon-document"></i>
-          <span slot="title">导航三</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-setting"></i>
-          <span slot="title">导航四</span>
-        </el-menu-item>
-      </el-menu>
+        <template v-for="(route,index) in routers">
+            <template v-if="route.children">
+                <el-submenu :index="route.name" :key="index">
+                    <template slot="title">
+                        <i :class="route.meta.icon"></i>
+                        <span slot="title">{{ route.meta.name }}</span>
+                    </template>
+                    <template v-for="(subRoute,subIndex) in route.children">
+                        <el-submenu
+                                v-if="subRoute.children"
+                                :index="subRoute.name"
+                                :key="subIndex"
+                        >
+                            <template>
+                                <i :class="subRoute.meta.icon"></i>
+                                <span slot="title">{{ subRoute.meta.name }}</span>
+                            </template>
+                            <el-menu-item
+                                    v-for="(threeRoute,i) in subRoute.children"
+                                    :key="i"
+                                    :index="threeRoute.name"
+                            >{{ threeRoute.meta.name }}
+                            </el-menu-item>
+                        </el-submenu>
+                        <el-menu-item
+                                v-else
+                                :index="subRoute.name"
+                                :key="subIndex"
+                        >
+                            <i :class="subRoute.meta.icon"></i>
+                            <span slot="title">{{ subRoute.meta.name }}</span>
+                        </el-menu-item>
+                    </template>
+                </el-submenu>
+            </template>
+            <template v-else>
+                <el-menu-item :index="route.name" :key="index">
+                    <i :class="route.meta.icon"></i>
+                    <span slot="title">{{ route.meta.name }}</span>
+                </el-menu-item>
+            </template>
+        </template>
+    </el-menu>
 </template>
 
 <script>
-    export default {
-        name: "aside",
-        data(){
-            return{
-                collapse: true
-            }
-        },
-        methods:{
-            changeCollapse(){
-                this.collapse = !this.collapse
-            }
+import {mapState} from 'vuex'
+import sliderPath from '@/router/sliderPath'
+export default {
+    name: "aside",
+    data() {
+        return {
+            routers:sliderPath
         }
+    },
+    methods: {
+    },
+    computed: {
+        ...mapState([
+            'collapse'
+        ])
     }
+}
 </script>
 
 <style>
-  .aside{
-    width: 300px;
-  }
-  .collapse {
-    width: 64px;
-  }
-  .menu-header{
-    height: 60px;
-    text-align: center;
-  }
+    .aside {
+        width: 300px;
+    }
+
+    .collapse {
+        width: 64px;
+    }
+
+    .menu-header {
+        height: 60px;
+        text-align: center;
+    }
 </style>
