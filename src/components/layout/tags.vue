@@ -6,6 +6,7 @@
                 :type="isActive(tag.path)?'':tag.type"
                 closable
                 :disable-transitions="true"
+                @click="toPath(tag.path)"
                 @close="handleClose(index)">
             {{tag.name}}
         </el-tag>
@@ -21,6 +22,9 @@
             }
         },
         methods:{
+            toPath(path){
+              this.$router.push(path)
+            },
             isActive(path){
                 return path === this.$route.fullPath;
             },
